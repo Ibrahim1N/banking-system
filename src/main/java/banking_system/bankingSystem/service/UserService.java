@@ -19,14 +19,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(User user) throws InvalidCredentialsException {
+    public void registerUser(User user) throws InvalidCredentialsException {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if(existingUser != null){
             throw new InvalidCredentialsException("User with this email already exists");
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public User loginUser(String email, String password) throws UserNotFoundException, InvalidCredentialsException {
